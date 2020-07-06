@@ -106,6 +106,11 @@ def get_all_users():
     all_users = db.session.query(User).all()
     return jsonify(users_schema.dump(all_users))
 
+@app.route("/user/get/<id>", methods=["GET"])
+def get_user_by_id(id):
+    user = db.session.query(User).filter(User.id == id).first()
+    return jsonify(user_schema.dump(user))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
