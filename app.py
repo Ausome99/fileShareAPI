@@ -6,7 +6,7 @@ from flask_heroku import Heroku
 import io
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = ""
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://cuzgllvuunwisu:e85a98e546ac71c54163ebadb3cc1525c7f5cb59b11e7e363ff362b22db0bf3a@ec2-3-216-129-140.compute-1.amazonaws.com:5432/dfpvifdk7vbh13"
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
@@ -110,6 +110,22 @@ def get_all_users():
 def get_user_by_id(id):
     user = db.session.query(User).filter(User.id == id).first()
     return jsonify(user_schema.dump(user))
+
+@app.route("/user/verification", methods=["POST"])
+def verify_user():
+    if request.content_type != "application/json":
+        return jsonify("Error: Data must be sent as JSON")
+    
+    post_data = request.get_json()
+    username = post_data.get("username")
+    password = post_data.get("password")
+
+    stored_password = db.session.query(User.password).filter(User.username == username).first()[0]
+
+    if stored_password is None or stored_password != password:
+        return jsonify("User NOT Verified")
+
+    return jsonify("User Verified")
 
 
 if __name__ == "__main__":
