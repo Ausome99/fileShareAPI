@@ -6,7 +6,7 @@ from flask_heroku import Heroku
 import io
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://cuzgllvuunwisu:e85a98e546ac71c54163ebadb3cc1525c7f5cb59b11e7e363ff362b22db0bf3a@ec2-3-216-129-140.compute-1.amazonaws.com:5432/dfpvifdk7vbh13"
+app.config["SQLALCHEMY_DATABASE_URI"] = ""
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
